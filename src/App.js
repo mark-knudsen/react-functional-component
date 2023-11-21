@@ -1,103 +1,83 @@
 import "./App.css";
 import React, { useState } from "react";
 
-
 const App = () => {
-
   const [todos, settodos] = useState([]);
   const [value, setvalue] = useState("");
   const [editing, setediting] = useState(false);
   const [currentid, setcurrentid] = useState("");
   const [currentValue, setcurrentValue] = useState("");
-
+  const [currentTodo, setcurrentTodo] = useState(null);
 
   const onChange = (e) => {
-    setvalue(e.target.value)
+    setvalue(e.target.value);
   };
-  const onAddTask = (e) => {
+
+  const onSubmit = (e) => {
     e.preventDefault();
 
-    const obj = {
-      name: value,
-      id: Date.now(),
-    };
-    if (value !== "") {
-      settodos(todos.concat(obj));
-      setvalue("")
+    if (editing) {
+      // If editing, update the existing todo
+      onEditTodo(currentid, currentValue);
+      setediting(false);
+    } else {
+      // If not editing, add a new todo
+      const obj = {
+        name: value,
+        id: Date.now(),
+      };
+      if (value !== "") {
+        settodos(todos.concat(obj));
+        setvalue("");
+      }
     }
   };
 
-  const onDeleteTask = (itemId) => {
-    settodos([...todos].filter(id => id.id !== itemId))
-  }
-
   const onEditTodo = (id, newValue) => {
-    todos.map((todo) => {
-      if (todo.id === id) {
-        todo.name = newValue;
-      }
-    });
-  };
-
-  const onSubmitEditTodo = (e) => {
-    e.preventDefault();
-    onEditTodo(currentid, currentValue);
-    setediting(false)
-
+    settodos((prevTodos) =>
+      prevTodos.map((todo) => (todo.id === id ? { ...todo, name: newValue } : todo))
+    );
   };
 
   const onToggleEdit = (todo) => {
-    setediting(true)
+    setediting(true);
     setcurrentValue(todo.name);
-    setcurrentid(todo.id)
-    setcurrentTodo(todo)
-
+    setcurrentid(todo.id);
+    setcurrentTodo(todo);
   };
 
   const onEditInputChange = (e) => {
     setcurrentValue(e.target.value);
-
   };
 
+  const onDeleteTask = (itemId) => {
+    settodos(todos.filter((id) => id.id !== itemId));
+  };
 
   const mylist = todos.map((todo) => (
-    <li className="todo_item">
+    <li key={todo.id} className="todo_item">
       {todo.name}
-
-      <button onClick={onToggleEdit(todo)}>Edit</button>
-      <button onClick={onDeleteTask(todo.id)}>Remove</button>
+      <button onClick={() => onToggleEdit(todo)}>Edit</button>
+      <button onClick={() => onDeleteTask(todo.id)}>Remove</button>
     </li>
   ));
 
   return (
-    <>
+    <div>
       <div className="App">
-        {editing === false ? (
-          <form onSubmit={onAddTask}>
-            <input
-              placeholder="typeyour task"
-              value={value}
-              onChange={onChange}
-            />
-            <button onClick={onAddTask}>Add Item</button>
-          </form>
-        ) : (
-          <form onSubmit={onSubmitEditTodo}>
-            <input
-              placeholder="edit your task"
-              value={currentTodo.name}
-              name={currentTodo.name}
-              onChange={onEditInputChange}
-            />
-            <button onClick={onSubmitEditTodo}>Update Item</button>
-          </form>
-        )}
+        <form onSubmit={onSubmit}>
+          <input
+            placeholder={editing ? "Edit your task" : "Type your task"}
+            value={editing ? currentValue : value}
+            onChange={editing ? onEditInputChange : onChange}
+          />
+          <button type="submit">{editing ? "Update Item" : "Add Item"}</button>
+        </form>
 
         <ul className="todo_wrapper">{mylist}</ul>
       </div>
-    </>
+    </div>
   );
-
-}
+};
 
 export default App;
