@@ -7,7 +7,7 @@ const App = () => {
   const [editing, setediting] = useState(false);
   const [currentid, setcurrentid] = useState("");
   const [currentValue, setcurrentValue] = useState("");
-  const [currentTodo, setcurrentTodo] = useState(null);
+  const [setcurrentTodo] = useState(null);
 
   const onChange = (e) => {
     setvalue(e.target.value);
@@ -73,7 +73,6 @@ const App = () => {
           />
           <button type="submit">{editing ? "Update Item" : "Add Item"}</button>
         </form>
-
         <ul className="todo_wrapper">{mylist}</ul>
       </div>
     </div>
