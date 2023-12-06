@@ -9,20 +9,13 @@ const App = () => {
   const [currentValue, setcurrentValue] = useState("");
   const [currentTodo, setcurrentTodo] = useState(null);
 
-  const onChange = (e) => {
-    setvalue(e.target.value);
-  };
-
   const onSubmit = (e) => {
     e.preventDefault();
-
-    if (editing) {
-      // If editing, update the existing todo
+    if (editing) {    // If editing, update the existing todo   
       onEditTodo(currentid, currentValue);
       setediting(false);
-    } else {
-      // If not editing, add a new todo
-      const obj = {
+    } else {    // If not editing, add a new todo
+      const obj = {  
         name: value,
         id: Date.now(),
       };
@@ -31,6 +24,10 @@ const App = () => {
         setvalue("");
       }
     }
+  };
+
+  const onChange = (e) => {
+    setvalue(e.target.value);
   };
 
   const onEditTodo = (id, newValue) => {
