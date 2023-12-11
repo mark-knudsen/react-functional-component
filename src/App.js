@@ -15,7 +15,7 @@ const App = () => {
       onEditTodo(currentid, currentValue);
       setediting(false);
     } else {    // If not editing, add a new todo
-      const obj = {  
+      const obj = {
         name: value,
         id: Date.now(),
       };
@@ -67,7 +67,7 @@ const App = () => {
           value={editing ? currentValue : value}
           onChange={editing ? onEditInputChange : onChange}
         />
-        <button className="add" type="submit">{editing ? "Update Item" : "Add Item"}</button>
+        <button className="add" type="submit">{editing ? "Update ToDo" : "Add ToDo"}</button>
       </form>
       <ul className="todo_wrapper">{mylist}</ul>
     </div>
