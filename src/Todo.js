@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const Todo = () => {
   const [todos, settodos] = useState([]);
@@ -8,6 +8,23 @@ const Todo = () => {
   const [currentid, setcurrentid] = useState("");
   const [currentValue, setcurrentValue] = useState("");
   const [currentTodo, setcurrentTodo] = useState(null);
+
+  // Added hooks that simulate some of the Lifecycle hooks. - NEW
+  useEffect(() => {
+    // instead of componentDidMount
+    console.log("Component mounted");
+
+    // instead of componentWillUnmount
+    return () => {
+      console.log("Component will unmount");
+    };
+  }, []); // Empty dependency array means it runs once when component mounts
+
+  useEffect(() => {
+    // instead of componentDidUpdate
+    console.log("Component updated");
+  }, [todos]); // it runs whenever 'todos' change
+
 
   const onSubmit = (e) => {
     e.preventDefault();
